@@ -1,3 +1,4 @@
+*glob*
 *.DS_Store
 *.zip
 *.pyc
@@ -8,3 +9,7 @@
 *.bin
 *.npz
 __pycache__/
+*pkl
+*data
+*models*
+
