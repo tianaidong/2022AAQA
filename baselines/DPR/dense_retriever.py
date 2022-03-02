@@ -134,7 +134,7 @@ def parse_qa_jsonlines_file(location) -> Iterator[Tuple[str, str, List[str], str
         question = row["question"]
         answers = row["answers"]
         q_id = row["id"]
-        lang = row["lang"]
+        lang = "en" #row["lang"]
         yield question, q_id, answers, lang
 
 def validate(passages: Dict[object, Tuple[str, str]], answers: List[List[str]],
@@ -266,8 +266,10 @@ def main(args):
 
     # index all passages
     ctx_files_pattern = args.encoded_ctx_file
+    ctx_files_pattern = "models/checkpoints/checkpoints_multilingual/embeddings_multi/wiki_emb_*"
     input_paths = glob.glob(ctx_files_pattern)
-
+    print(ctx_files_pattern)
+    print(input_paths)
     index_path = "_".join(input_paths[0].split("_")[:-1])
     if args.save_or_load_index and os.path.exists(index_path):
         retriever.index.deserialize(index_path)

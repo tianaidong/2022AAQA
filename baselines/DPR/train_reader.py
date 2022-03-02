@@ -58,6 +58,7 @@ class ReaderTrainer(object):
             saved_state = load_states_from_checkpoint(model_file)
             set_encoder_params_from_state(saved_state.encoder_params, args)
 
+        args.encoder_model_type = "hf_bert"
         tensorizer, reader, optimizer = init_reader_components(args.encoder_model_type, args)
 
         reader, optimizer = setup_for_distributed_mode(reader, optimizer, args.device, args.n_gpu,
@@ -154,11 +155,13 @@ class ReaderTrainer(object):
         self.reader.eval()
         data_iterator = self.get_data_iterator(args.dev_file, args.dev_batch_size, False, shuffle=False)
 
+        print("Loaded data")
         log_result_step = args.log_batch_step
         all_results = []
 
         eval_top_docs = args.eval_top_docs
         for i, samples_batch in enumerate(data_iterator.iterate_data()):
+            print(i)
             input = create_reader_input(self.tensorizer.get_pad_id(),
                                         samples_batch,
                                         args.passages_per_question_predict,

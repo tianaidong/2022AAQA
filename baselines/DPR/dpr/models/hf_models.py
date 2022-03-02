@@ -91,7 +91,8 @@ def get_optimizer(model: nn.Module, learning_rate: float = 1e-5, adam_eps: float
 
 
 def get_bert_tokenizer(pretrained_cfg_name: str, do_lower_case: bool = True):
-    return BertTokenizer.from_pretrained(pretrained_cfg_name, do_lower_case=do_lower_case)
+  #  return BertTokenizer.from_pretrained(pretrained_cfg_name, do_lower_case=do_lower_case)
+    return BertTokenizer.from_pretrained("bert-base-uncased")
 
 
 def get_roberta_tokenizer(pretrained_cfg_name: str, do_lower_case: bool = True):
@@ -113,7 +114,8 @@ class HFBertEncoder(BertModel):
         if dropout != 0:
             cfg.attention_probs_dropout_prob = dropout
             cfg.hidden_dropout_prob = dropout
-        return cls.from_pretrained(cfg_name, config=cfg, project_dim=projection_dim, **kwargs)
+#        return cls.from_pretrained(cfg_name, config=cfg, project_dim=projection_dim, from_tf=True, **kwargs)
+        return cls.from_pretrained("bert-base-uncased")
 
     def forward(self, input_ids: T, token_type_ids: T, attention_mask: T) -> Tuple[T, ...]:
         if self.config.output_hidden_states:
