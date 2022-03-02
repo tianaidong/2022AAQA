@@ -44,7 +44,7 @@ def f1_score(prediction, ground_truth):
     precision = 1.0 * num_same / len(prediction_tokens)
     recall = 1.0 * num_same / len(ground_truth_tokens)
     f1 = (2 * precision * recall) / (precision + recall)
-    #print(precision)
+#    print(precision, recall)
     return f1, precision, recall
 
 
@@ -74,8 +74,8 @@ def evaluate(dataset, predictions, per_lang=False, lang="ja"):
     f1 = exact_match = total = 0
     precision = recall = 0
     for qa in dataset:
-        if per_lang is True and lang != qa["lang"]:
-            continue
+        #if per_lang is True and lang != qa["lang"]:
+        #    continue
         total += 1
         if qa['id'] not in predictions:
             message = 'Unanswered question ' + qa['id'] + \
@@ -85,6 +85,9 @@ def evaluate(dataset, predictions, per_lang=False, lang="ja"):
 
         ground_truths = qa["answers"]
         prediction = predictions[qa['id']]["answer"] if isinstance( predictions[qa['id']], dict) else predictions[qa['id']] 
+        print("Truth: ", ground_truths)
+        print("Pred: ", prediction)
+        print("\n\n\n")
         exact_match += metric_max_over_ground_truths(
             exact_match_score, prediction, ground_truths)
         f1_tmp, prec_tmp, recall_tmp = metric_max_over_ground_truths(
@@ -121,6 +124,8 @@ if __name__ == '__main__':
         lang_result = evaluate(dataset, predictions, True, lang)
         if lang_result is False:
             continue
+#        assert(lang_result["precision"] <= 1 and lang_result["recall"] <= 1)
+        print(lang_result["precision"], lang_result["recall"])
         print("F1: {}, EM:{}".format(lang_result["f1"], lang_result["exact_match"]))
         lang_count += 1
         f1_total += lang_result["f1"]
