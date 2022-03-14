@@ -266,7 +266,7 @@ def main(args):
 
     # index all passages
     ctx_files_pattern = args.encoded_ctx_file
-    ctx_files_pattern = "models/checkpoints/checkpoints_multilingual/embeddings_multi/wiki_emb_*"
+    #ctx_files_pattern = "models/checkpoints/checkpoints_multilingual/embeddings_multi/wiki_emb_*"
     input_paths = glob.glob(ctx_files_pattern)
     print(ctx_files_pattern)
     print(input_paths)
