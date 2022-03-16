@@ -59,6 +59,13 @@ class BiEncoder(nn.Module):
         self.fix_q_encoder = fix_q_encoder
         self.fix_ctx_encoder = fix_ctx_encoder
 
+        # The following lines are added avoid the load_state_dict error caused by trying to load the model trained with Language Agnostic Code;
+        # This is a temporary fix; 
+        hidden_size = 768
+        num_langs = 8 
+        self.q_emb_classify_language = torch.nn.Linear(hidden_size, num_langs)
+        self.ctx_emb_classify_language = torch.nn.Linear(hidden_size, num_langs)
+
     @staticmethod
     def get_representation(sub_model: nn.Module, ids: T, segments: T, attn_mask: T, fix_encoder: bool = False) -> (
     T, T, T):
